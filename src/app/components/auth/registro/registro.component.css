@@ -3,6 +3,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
 }
 
 .registro{
@@ -11,9 +12,39 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    flex-direction: column;
     /* text-align: center;*/
 }
 
 .ancho{
     width: 80%;
+}
+.ancho__file{
+    width: 264px;
+}
+.mat-radio-button ~ .mat-radio-button {
+    margin-left: 16px;
+}
+.file-name {
+    margin-left: 1rem; /* or whatever margin you require */
+}
+
+.registro{
+    transition: all 0.6s ease-out !important;
+}
+.img{
+    width: 30%;
+    margin-top: 5rem;
+}
+
+
+@media (min-width: 768px) {
+    .body{
+        padding-top: 0;
+        padding-bottom: 2rem;
+    }
+    .img{
+        width: 50%;
+        margin-top: 1rem;
+    }
 }
