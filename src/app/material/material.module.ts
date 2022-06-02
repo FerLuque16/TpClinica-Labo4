@@ -11,18 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
-
-
-
-
-
-
-
-
-
-
-
-
+import { MatCardModule } from '@angular/material/card';
 
 
 @NgModule({
@@ -41,7 +30,8 @@ import { MatListModule } from '@angular/material/list';
     MatProgressSpinnerModule,
     MatToolbarModule,
     MatSidenavModule,
-    MatListModule
+    MatListModule,
+    MatCardModule
 
     
     

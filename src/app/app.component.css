@@ -1,3 +1,7 @@
+mat-sidenav-container{
+    /* height: 100%; */
+    height: calc(100% - 64px);
+}
 .example-container {
     display: flex;
     flex-direction: column;
@@ -6,4 +10,7 @@
     bottom: 0;
     left: 0;
     right: 0;
+}
+.example-spacer {
+    flex: 1 1 auto;
 }

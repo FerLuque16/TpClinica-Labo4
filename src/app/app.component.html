@@ -1,12 +1,57 @@
 
 <!-- <app-login></app-login> -->
 
-    
-    <app-navbar>      
-        <!-- <app-verificar-email *ngIf="!spinner"></app-verificar-email> -->
+<mat-toolbar color="primary">
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon" (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Clinica Fernando Luque</span>
+    <span class="example-spacer"></span>
+    <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
+      <mat-icon>favorite</mat-icon>
+    </button>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with share icon">
+      <mat-icon>share</mat-icon>
+    </button> -->
+</mat-toolbar>
+<mat-sidenav-container>
+    <mat-sidenav #sidenav mode="over">
+        <mat-nav-list>
+            <mat-list-item routerLink="/bienvenido" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>home</mat-icon>
+                <span>Bienvenido</span>
+            </mat-list-item>
+            <mat-list-item routerLink="/home" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>home</mat-icon>
+                <span>Home</span>
+            </mat-list-item>
+            <mat-list-item routerLink="/auth/login" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>home</mat-icon>
+                <span>Login</span>
+            </mat-list-item>
+            <mat-list-item routerLink="/auth/registro" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>home</mat-icon>
+                <span>Registro</span>
+            </mat-list-item>
+        
+        </mat-nav-list>
+    </mat-sidenav>
+
+    <div>
+
         
         <router-outlet></router-outlet>
-    </app-navbar>
+    </div>
+</mat-sidenav-container>
+
+
+
+    <!-- <app-navbar> 
+    </app-navbar>      -->
+        <!-- <app-verificar-email *ngIf="!spinner"></app-verificar-email> -->
+        
+        
+    
     
     <!-- <app-sidebar></app-sidebar> -->
     <!-- <app-registro *ngIf="!spinner"></app-registro> -->

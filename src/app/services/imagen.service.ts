@@ -9,7 +9,13 @@ export class ImagenService {
 
   constructor(private storage: AngularFireStorage) { }
 
-  subirArchivo(file: File, filePath:string){
-    const task = this.storage.upload(filePath, file);
+  subirArchivo(file: File, filePath:string, file2?:File, filePath2?:string){
+    if(file2 && filePath2){
+      let task1 = this.storage.upload(filePath, file);
+      let task2 = this.storage.upload(filePath2, file2);
+    }
+    else{
+      let task = this.storage.upload(filePath, file);
+    }
   }
 }

@@ -1,56 +1,23 @@
 <div class="body">
     <mat-spinner *ngIf="spinner"></mat-spinner>
-    <div class="login" *ngIf="!spinner">
+    <form class="login" *ngIf="!spinner" [formGroup]="loginForm">
         <img src="./assets/img/usuario.png" alt="Imagen usuario" width="50%">
         <h1>Login</h1>
         <mat-form-field appearance="fill" class="ancho">
             <mat-label>Email</mat-label>
-            <input matInput>
+            <input matInput formControlName="email">
+            <mat-error *ngIf="loginForm.controls['email'].errors?.['required']">El email es obligatorio</mat-error>
+            <mat-error *ngIf="loginForm.controls['email'].errors?.['email']">Debe ingresar un email valido</mat-error>
         </mat-form-field>
         <mat-form-field appearance="fill" class="ancho">
             <mat-label>Ingrese su contraseña</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'">
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
             <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" style="border:none;">
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
+            <mat-error *ngIf="loginForm.controls['password'].errors?.['required']">La contraseña es obligatoria</mat-error>
         </mat-form-field>
-        
-        <!-- <mat-form-field appearance="fill" class="ancho">
-            <mat-label>Nombre</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="ancho">
-            <mat-label>Apellido</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="ancho">
-            <mat-label>Edad</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="ancho">
-            <mat-label>DNI</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-radio-group aria-label="Select an option" class="ancho mb-2">
-            <mat-radio-button value="aciente">Paciente</mat-radio-button>
-            <mat-radio-button value="especialista">Especialista</mat-radio-button>
-        </mat-radio-group>       
-        <mat-form-field appearance="fill" class="ancho">
-            <mat-label>Email</mat-label>
-            <input matInput>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="ancho">
-            <mat-label>Ingrese su contraseña</mat-label>
-            <input matInput [type]="hide ? 'password' : 'text'">
-            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" style="border:none;">
-                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
-            </button>
-        </mat-form-field>
-        <mat-form-field appearance="fill" class="ancho">
-            <mat-label>Email</mat-label>
-            <input matInput>
-        </mat-form-field> -->
-        <button mat-raised-button color="primary" class="ancho">Primary</button>
-    </div>
+        <button mat-raised-button color="primary" class="ancho" (click)="login()">Ingresar</button>
+    </form>
 </div>
 

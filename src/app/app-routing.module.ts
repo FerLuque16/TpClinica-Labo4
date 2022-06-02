@@ -1,11 +1,16 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { BienvenidoComponent } from './components/bienvenido/bienvenido.component';
+import { HomeComponent } from './components/home/home.component';
 
 const routes: Routes = [
   {
     path:'bienvenido',
     component:BienvenidoComponent
+  },
+  {
+    path:'home',
+    component:HomeComponent
   },
   {
     path:'auth',

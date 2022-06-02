@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup, SelectControlValueAccessor, Validators } from '@angular/forms';
 import { AngularFirestore, AngularFirestoreCollection } from '@angular/fire/compat/firestore';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { ImagenService } from 'src/app/services/imagen.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 @Component({
@@ -33,16 +36,17 @@ export class RegistroComponent implements OnInit {
 
   tipoUsuario = 'paciente';
   registroForm! : FormGroup;
-  constructor(private fb :FormBuilder, private firestore: AngularFirestore) { 
+  constructor(private fb :FormBuilder, private usuarioService: UsuarioService
+              ,private imgService: ImagenService, private auth:AuthService){ 
     this.registroForm =  fb.group({
       nombre:['',[Validators.required]],
       apellido:['',[Validators.required]],
       edad:['',[Validators.required]],
       dni:['',[Validators.required]],
-      tipo:['paciente'],
+      rol:['paciente'],
       obraSocial:['',[Validators.required,Validators.minLength(4)]],
       especialidad:[''],
-      imagen:['',[Validators.required]],
+      imagen1:['',[Validators.required]],
       imagen2:['',[Validators.required]],
       email:['',[Validators.required,Validators.email]],
       contraseña:['',[Validators.required]]
@@ -90,7 +94,7 @@ export class RegistroComponent implements OnInit {
   }
   onEspecialidadSeleccionada(event:any){
     // console.log(this.registroForm.value.tipo);
-    if(this.registroForm.value.tipo == 'paciente')
+    if(this.registroForm.value.rol == 'paciente')
     {
       this.tipoUsuario = 'paciente';
       // console.log(this.registroForm.get('obraSocial'))
@@ -122,27 +126,46 @@ export class RegistroComponent implements OnInit {
       
     } 
   }
-  mostrarForm(){
+  async registrar(){
     console.log(this.registroForm)
     // this.firestore.collection('users').add({nombre:'Fer',apellido:'Luque'})
-    if(this.registroForm.value.tipo == 'paciente'){
+    if(this.registroForm.value.rol == 'paciente'){
 
-      this.usuario = {...this.registroForm.value};
-      this.usuario.rol = 'paciente';
+      this.usuario = {...this.registroForm.value,imagen1:this.imagenPath1,imagen2:this.imagenPath2};
+      // this.usuario.rol = 'paciente';
 
       delete this.usuario.especialidad;
       delete this.usuario.habilitado;
+
+      try {
+        await this.auth.registrar(this.usuario.email,this.registroForm.value.contraseña);
+        this.imgService.subirArchivo(this.selectedFile1,this.imagenPath1,this.selectedFile2,this.imagenPath2);
+        this.usuarioService.guardarUsuario(this.usuario);
+      } catch (error:any) {
+        console.log('Error en el registro')
+      }
+
+
+
 
 
       console.log(this.usuario);
     }
     else{
 
-      this.usuario = {...this.registroForm.value};
+      this.usuario = {...this.registroForm.value,imagen1:this.imagenPath1};
       this.usuario.rol = 'especialista';
 
       delete this.usuario.obraSocial;
       delete this.usuario.imagen2;
+
+      try {
+        await this.auth.registrar(this.usuario.email,this.registroForm.value.contraseña);
+        this.imgService.subirArchivo(this.selectedFile1,this.imagenPath1);
+        this.usuarioService.guardarUsuario(this.usuario);
+      } catch (error:any) {
+        console.log('Error en el registro')
+      }
 
       console.log(this.usuario);
     }

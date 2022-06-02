@@ -26,7 +26,7 @@
                 <mat-error *ngIf="registroForm.controls['dni'].errors?.['required']">El DNI es obligatorio</mat-error>
             </mat-form-field>
             <mat-radio-group aria-label="Select an option" class="ancho mb-2" (change)="onEspecialidadSeleccionada($event)"
-            formControlName="tipo">
+            formControlName="rol">
                 <mat-radio-button value="paciente" checked="true" >Paciente</mat-radio-button>
                 <mat-radio-button value="especialista">Especialista</mat-radio-button>
             </mat-radio-group>      
@@ -53,9 +53,9 @@
                 <div class="ancho d-flex flex-column mb-3">
                     <mat-label>Imagen de perfil</mat-label>
                     <button class="ancho__file" type="button" mat-raised-button color="primary" (click)="fileInput1.click()">Elija su imagen de perfil</button>
-                    <input hidden (change)="onFileSelected1($event)" #fileInput1 type="file" accept=".jpg, .png, .jpeg, .svg" formControlName="imagen" >
+                    <input hidden (change)="onFileSelected1($event)" #fileInput1 type="file" accept=".jpg, .png, .jpeg, .svg" formControlName="imagen1" >
                     <span class="file-name" *ngIf="imagenPath1">{{imagenPath1}}</span>
-                    <mat-error *ngIf="registroForm.controls['imagen'].errors?.['required']">Esta imagen es obligatoria</mat-error>
+                    <mat-error *ngIf="registroForm.controls['imagen1'].errors?.['required']">Esta imagen es obligatoria</mat-error>
                 </div>
                 
                 <div class="ancho d-flex flex-column archivo" *ngIf="tipoUsuario == 'paciente'">
@@ -83,7 +83,7 @@
                 <mat-error *ngIf="registroForm.controls['contraseña'].errors?.['required']">La contraseña es obligatoria</mat-error>
 
             </mat-form-field>
-            <button mat-raised-button color="primary" class="ancho" (click)="mostrarForm()" [disabled]="!registroForm.valid">Registrarse</button>
+            <button mat-raised-button color="primary" class="ancho" (click)="registrar()" [disabled]="!registroForm.valid">Registrarse</button>
         </div>
     </form>  
 </div>
