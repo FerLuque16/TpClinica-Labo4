@@ -14,14 +14,21 @@ import { provideFirestore,getFirestore } from '@angular/fire/firestore';
 import { provideStorage,getStorage } from '@angular/fire/storage';
 import { AngularFireModule } from '@angular/fire/compat';
 import { AngularFireStorageModule } from '@angular/fire/compat/storage';
+import { VerificarEmailComponent } from './components/auth/verificar-email/verificar-email.component';
+import { NavbarComponent } from './components/shared/navbar/navbar.component';
+import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
+import { BienvenidoComponent } from './components/bienvenido/bienvenido.component';
+import { HomeComponent } from './components/home/home.component';
 
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    LoginComponent,
-    RegistroComponent
+    NavbarComponent,
+    SidebarComponent,
+    BienvenidoComponent,
+    HomeComponent
   ],
   imports: [
     BrowserModule,

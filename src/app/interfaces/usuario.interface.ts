@@ -8,6 +8,6 @@ export interface Usuario{
     imagen1:string,
     imagen2?:string,
     email:string,
-    habilitado:boolean,
-
+    habilitado?:boolean,
+    rol:string
 }

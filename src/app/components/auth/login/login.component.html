@@ -1,5 +1,6 @@
 <div class="body">
-    <div class="login">
+    <mat-spinner *ngIf="spinner"></mat-spinner>
+    <div class="login" *ngIf="!spinner">
         <img src="./assets/img/usuario.png" alt="Imagen usuario" width="50%">
         <h1>Login</h1>
         <mat-form-field appearance="fill" class="ancho">
@@ -13,7 +14,8 @@
                 <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
             </button>
         </mat-form-field>
-        <mat-form-field appearance="fill" class="ancho">
+        
+        <!-- <mat-form-field appearance="fill" class="ancho">
             <mat-label>Nombre</mat-label>
             <input matInput>
         </mat-form-field>
@@ -47,7 +49,7 @@
         <mat-form-field appearance="fill" class="ancho">
             <mat-label>Email</mat-label>
             <input matInput>
-        </mat-form-field>
+        </mat-form-field> -->
         <button mat-raised-button color="primary" class="ancho">Primary</button>
     </div>
 </div>

@@ -7,10 +7,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class LoginComponent implements OnInit {
 
+  spinner = true;
   hide = true;
   constructor() { }
 
   ngOnInit(): void {
+    setTimeout(() => {
+      this.spinner = false;
+    }, 500);
   }
 
 }

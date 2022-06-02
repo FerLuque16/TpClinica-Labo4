@@ -1,0 +1,16 @@
+mat-sidenav-container{
+    /* height: 100%; */
+    height: calc(100% - 64px);
+}
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+mat-sidenav-content{
+    background-color: white;
+}
+/* mat-toolbar{
+    position: fixed;
+    top: 0; 
+    
+} */
