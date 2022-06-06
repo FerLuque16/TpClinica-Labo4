@@ -33,7 +33,10 @@
                 <mat-icon mat-list-icon>home</mat-icon>
                 <span>Registro</span>
             </mat-list-item>
-        
+            <mat-list-item *ngIf="userLogueado" (click)="sidenav.toggle()" (click)="logout()">
+                <mat-icon mat-list-icon>logout</mat-icon>
+                <span>Cerrar sesion</span>
+            </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
 

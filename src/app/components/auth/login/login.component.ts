@@ -12,6 +12,12 @@ export class LoginComponent implements OnInit {
   spinner = true;
   hide = true;
 
+  cuentas: any[] = [
+    {email:'paciente1@gmail.com',password:'paciente1',nombre:'paciente',apellido:'uno'},
+    {email:'paciente2@gmail.com',password:'paciente2',nombre:'paciente',apellido:'dos'},
+    {email:'paciente3@gmail.com',password:'paciente3',nombre:'paciente',apellido:'tres'},
+  ]
+
   loginForm!: FormGroup
   constructor(private fb :FormBuilder,private auth:AuthService ) {
 
@@ -34,6 +40,18 @@ export class LoginComponent implements OnInit {
     } catch (error:any) {
       console.log(error)
     }
+  }
+
+  async loginSinVerificacion(email:string, password:string){
+    try {
+      await this.auth.loginSinVerificacion(email,password)
+    } catch (error:any) {
+      console.log('Error');
+    }
+  }
+
+  verBoton(email:string,password:string){
+    console.log(email,password);
   }
 
 }

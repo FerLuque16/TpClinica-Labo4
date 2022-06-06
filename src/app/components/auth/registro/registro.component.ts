@@ -49,7 +49,7 @@ export class RegistroComponent implements OnInit {
       imagen1:['',[Validators.required]],
       imagen2:['',[Validators.required]],
       email:['',[Validators.required,Validators.email]],
-      contraseña:['',[Validators.required]]
+      password:['',[Validators.required,Validators.minLength(6)]]
     })
   }
 
@@ -138,9 +138,13 @@ export class RegistroComponent implements OnInit {
       delete this.usuario.habilitado;
 
       try {
-        await this.auth.registrar(this.usuario.email,this.registroForm.value.contraseña);
+        await this.auth.registrar(this.usuario.email,this.registroForm.value.password);
+        
         this.imgService.subirArchivo(this.selectedFile1,this.imagenPath1,this.selectedFile2,this.imagenPath2);
-        this.usuarioService.guardarUsuario(this.usuario);
+        //Guardo un documento usuario con el id igual al uid registrado
+        this.usuarioService.guardarUsuario(this.usuario, this.auth.usuario.uid);
+        //Le añado el campo uid al documento del usuario
+        this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
       } catch (error:any) {
         console.log('Error en el registro')
       }
@@ -155,14 +159,18 @@ export class RegistroComponent implements OnInit {
 
       this.usuario = {...this.registroForm.value,imagen1:this.imagenPath1};
       this.usuario.rol = 'especialista';
+      this.usuario.habilitado = false;
 
       delete this.usuario.obraSocial;
       delete this.usuario.imagen2;
 
       try {
-        await this.auth.registrar(this.usuario.email,this.registroForm.value.contraseña);
+        await this.auth.registrar(this.usuario.email,this.registroForm.value.password);
         this.imgService.subirArchivo(this.selectedFile1,this.imagenPath1);
-        this.usuarioService.guardarUsuario(this.usuario);
+        //Guardo un documento usuario con el id igual al uid registrado
+        this.usuarioService.guardarUsuario(this.usuario,this.auth.usuario.uid);
+        //Le añado el campo uid al documento del usuario
+        this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
       } catch (error:any) {
         console.log('Error en el registro')
       }
@@ -170,5 +178,10 @@ export class RegistroComponent implements OnInit {
       console.log(this.usuario);
     }
 
+  }
+
+  //6HlXNI6LNrTGuEdaRjZLyoasJpo2
+  actualizar(){
+    this.usuarioService.guardarUsuario({habilitado:true},'6HlXNI6LNrTGuEdaRjZLyoasJpo2');
   }
 }

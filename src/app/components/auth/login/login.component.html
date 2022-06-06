@@ -19,5 +19,10 @@
         </mat-form-field>
         <button mat-raised-button color="primary" class="ancho" (click)="login()">Ingresar</button>
     </form>
+
+    <div class="botones">
+        <button mat-raised-button color="primary" *ngFor="let item of  cuentas" (click)="loginSinVerificacion(item.email,item.password)">{{item.nombre}} {{item.apellido}}</button>
+        
+    </div>
 </div>
 
