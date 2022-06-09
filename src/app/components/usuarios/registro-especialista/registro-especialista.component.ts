@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder,FormGroup,Validators } from '@angular/forms';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthService } from 'src/app/services/auth.service';
 import { ImagenService } from 'src/app/services/imagen.service';
@@ -33,7 +34,7 @@ export class RegistroEspecialistaComponent implements OnInit {
   tipoUsuario = '';
   registroForm! : FormGroup;
   constructor(private fb :FormBuilder, private usuarioService: UsuarioService
-    ,private imgService: ImagenService, private auth:AuthService) {
+    ,private imgService: ImagenService, private auth:AuthService,private snackBar: MatSnackBar) {
 
       this.registroForm =  fb.group({
         nombre:['',[Validators.required]],
@@ -80,6 +81,8 @@ export class RegistroEspecialistaComponent implements OnInit {
         this.usuarioService.guardarUsuario(this.usuario,this.auth.usuario.uid);
         //Le añado el campo uid al documento del usuario
         this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
+        this.registroForm.reset();
+        this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${this.usuario.email}`,'Cerrar');
       } catch (error:any) {
         console.log('Error en el registro')
       }
