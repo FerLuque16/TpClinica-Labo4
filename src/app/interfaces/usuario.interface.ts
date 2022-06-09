@@ -9,5 +9,6 @@ export interface Usuario{
     imagen2?:string,
     email:string,
     habilitado?:boolean,
-    rol:string
+    rol:string,
+    uid:string
 }

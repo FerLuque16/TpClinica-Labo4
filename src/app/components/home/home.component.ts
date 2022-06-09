@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Usuario } from 'src/app/interfaces/usuario.interface';
+import { AuthService } from 'src/app/services/auth.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-home',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  userUid!:string;
+  userRol!:string;
+  user!:Usuario | undefined;
+  constructor(private authService: AuthService, private userService: UsuarioService) { }
 
   ngOnInit(): void {
+    this.authService.getUserLogged().subscribe(async data =>{
+      this.user = await this.userService.obtenerUsuario(data?.uid);
+      this.mostrarRol();
+    })
+    // this.mostrarRol();
+    // awaitthis.mostrarRol();
+    
+  }
+
+  mostrarRol(){
+    console.log(this.user?.rol)
   }
 
 }

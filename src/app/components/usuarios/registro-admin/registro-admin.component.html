@@ -1,0 +1,57 @@
+<p>registro-admin works!</p>
+<form [formGroup]="registroForm">
+    <div class="registro">
+        <img src="./assets/img/usuario.png" alt="Imagen usuario" width="50%" class="img">
+        <h1>Registrar Admin{{tipoUsuario}}</h1>
+        <mat-form-field appearance="fill" class="ancho">
+            <mat-label>Nombre</mat-label>
+            <input matInput formControlName="nombre">
+            <mat-error *ngIf="registroForm.controls['nombre'].errors?.['required']">El nombre es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="ancho">
+            <mat-label>Apellido</mat-label>
+            <input matInput formControlName="apellido" >
+            <mat-error *ngIf="registroForm.controls['apellido'].errors?.['required']">El apellido es obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="ancho">
+            <mat-label>Edad</mat-label>
+            <input matInput formControlName="edad">
+            <mat-error *ngIf="registroForm.controls['edad'].errors?.['required']">La edad es obligatoria</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="ancho">
+            <mat-label>DNI</mat-label>
+            <input matInput formControlName="dni">
+            <mat-error *ngIf="registroForm.controls['dni'].errors?.['required']">El DNI es obligatorio</mat-error>
+        </mat-form-field>
+        <div class="ancho d-flex flex-column mb-3">
+            <div class="ancho d-flex flex-column mb-3">
+                <mat-label>Imagen de perfil</mat-label>
+                <button class="ancho__file" type="button" mat-raised-button color="primary" (click)="fileInput1.click()">Elija su imagen de perfil</button>
+                <input hidden (change)="onFileSelected1($event)" #fileInput1 type="file" accept=".jpg, .png, .jpeg, .svg" formControlName="imagen1" >
+                <span class="file-name" *ngIf="imagenPath1">{{imagenPath1}}</span>
+                <mat-error *ngIf="registroForm.controls['imagen1'].errors?.['required']">Esta imagen es obligatoria</mat-error>
+            </div>
+        </div>
+        
+        <mat-form-field appearance="fill" class="ancho">
+            <mat-label>Email</mat-label>
+            <input matInput formControlName="email">
+            <mat-error *ngIf="registroForm.controls['email'].errors?.['required']">El emailes obligatorio</mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="fill" class="ancho">
+            <mat-label>Ingrese su contraseña</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" formControlName="password">
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide" style="border:none;">
+                <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+            
+            <mat-error *ngIf="registroForm.controls['password'].errors?.['required']">La contraseña es obligatoria</mat-error>
+            <mat-error *ngIf="registroForm.controls['password'].errors?.['minlength']">La contraseña debe tener 6 caracteres como minimo</mat-error>
+            <mat-hint>La contraseña debe tener 6 caracteres</mat-hint>
+    
+        </mat-form-field>
+        <button mat-raised-button color="primary" class="ancho mt-2" (click)="registrar()" [disabled]="!registroForm.valid">Registrarse</button>
+        <button mat-raised-button color="warn" (click)="mostrarForm()"> Mostrar form</button>
+    
+    </div>
+</form>

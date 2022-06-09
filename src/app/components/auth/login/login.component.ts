@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
     {email:'paciente1@gmail.com',password:'paciente1',nombre:'paciente',apellido:'uno'},
     {email:'paciente2@gmail.com',password:'paciente2',nombre:'paciente',apellido:'dos'},
     {email:'paciente3@gmail.com',password:'paciente3',nombre:'paciente',apellido:'tres'},
+    {email:'especialista@gmail.com',password:'1234567',nombre:'especialista',apellido:'uno'},
   ]
 
   loginForm!: FormGroup
@@ -27,6 +28,53 @@ export class LoginComponent implements OnInit {
     })
   }
 
+  /*
+    apellido
+        "luque"
+        (string)
+        contraseña
+        "1234567"
+        dni
+        "2342452"
+        edad
+        "35"
+        email
+        "especialista@gmail.com"
+        especialidad
+        "Pediatria"
+        habilitado
+        true
+        imagen1
+        "clasificacion-saldos.png"
+        nombre
+        "fer"
+        rol
+        "especialista"
+        uid
+        "apellido
+"luque"
+(string)
+contraseña
+"1234567"
+dni
+"2342452"
+edad
+"35"
+email
+"especialista@gmail.com"
+especialidad
+"Pediatria"
+habilitado
+true
+imagen1
+"clasificacion-saldos.png"
+nombre
+"fer"
+rol
+"especialista"
+uid
+"TIwInprF8TTwIH2QQyjtP9xvYNK2"" 
+  */
   ngOnInit(): void {
     setTimeout(() => {
       this.spinner = false;

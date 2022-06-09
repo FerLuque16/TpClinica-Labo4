@@ -34,7 +34,7 @@ export class RegistroComponent implements OnInit {
 
   hide = true;
 
-  tipoUsuario = 'paciente';
+  tipoUsuario = '';
   registroForm! : FormGroup;
   constructor(private fb :FormBuilder, private usuarioService: UsuarioService
               ,private imgService: ImagenService, private auth:AuthService){ 
@@ -43,7 +43,7 @@ export class RegistroComponent implements OnInit {
       apellido:['',[Validators.required]],
       edad:['',[Validators.required]],
       dni:['',[Validators.required]],
-      rol:['paciente'],
+      rol:[''],
       obraSocial:['',[Validators.required,Validators.minLength(4)]],
       especialidad:[''],
       imagen1:['',[Validators.required]],
@@ -54,7 +54,7 @@ export class RegistroComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    console.log(this.registroForm.value.tipo);
+    // console.log(this.registroForm.value.tipo);
     setTimeout(() => {
       this.spinner = false;
     }, 500);
@@ -76,6 +76,8 @@ export class RegistroComponent implements OnInit {
     this.selectedFile1 = file;
 
     this.imagenPath1 = event.target.files[0].name.replaceAll(' ','-');
+
+    
 
     console.log(this.imagenPath1)
 
@@ -180,8 +182,56 @@ export class RegistroComponent implements OnInit {
 
   }
 
-  //6HlXNI6LNrTGuEdaRjZLyoasJpo2
-  actualizar(){
-    this.usuarioService.guardarUsuario({habilitado:true},'6HlXNI6LNrTGuEdaRjZLyoasJpo2');
+
+  onRolSeleccionado(event:any){
+    // console.log(this.registroForm.value.tipo);
+    console.log(event)
+    if(event.target.dataset.tipo == 'paciente')
+    {
+      this.tipoUsuario = 'paciente';
+
+      this.registroForm.get('rol')?.setValue('paciente');
+      // console.log(this.registroForm.get('obraSocial'))
+      this.registroForm.get('obraSocial')?.setValidators([Validators.required])
+      this.registroForm.get('obraSocial')?.updateValueAndValidity();
+
+      this.registroForm.get('especialidad')?.clearValidators();
+      this.registroForm.get('especialidad')?.updateValueAndValidity();
+
+      this.registroForm.get('imagen2')?.setValidators([Validators.required])
+      this.registroForm.get('imagen2')?.updateValueAndValidity();
+
+      
+      // console.log(this.registroForm.get('obraSocial'))
+    }
+    else{
+      this.tipoUsuario = 'especialista';
+      this.registroForm.get('rol')?.setValue('especialista');
+
+      
+
+      this.registroForm.get('obraSocial')?.clearValidators();
+      this.registroForm.get('obraSocial')?.updateValueAndValidity();
+
+      this.registroForm.get('especialidad')?.setValidators([Validators.required])
+      this.registroForm.get('especialidad')?.updateValueAndValidity();
+
+      this.registroForm.get('imagen2')?.clearValidators();
+      this.registroForm.get('imagen2')?.updateValueAndValidity();    
+      
+    } 
   }
+  mostrarAlgo(event:any){
+    console.log(event.target.dataset.tipo)
+  }
+
+  volver(){
+    this.tipoUsuario = '';
+    this.registroForm.reset();
+  }
+
+  //6HlXNI6LNrTGuEdaRjZLyoasJpo2
+  // actualizar(){
+  //   this.usuarioService.guardarUsuario({habilitado:true},'6HlXNI6LNrTGuEdaRjZLyoasJpo2');
+  // }
 }

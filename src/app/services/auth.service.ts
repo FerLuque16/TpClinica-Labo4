@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router';
+import { UsuarioService } from './usuario.service';
 
 @Injectable({
   providedIn: 'root'
@@ -10,7 +11,11 @@ export class AuthService {
   // user : any;
   usuario : any;
 
-  constructor(private afAuth: AngularFireAuth, private router:Router) { }
+  rolUsuario: any;
+
+  
+
+  constructor(private afAuth: AngularFireAuth, private router:Router, private userService:UsuarioService) { }
 
 
   registrar(email:string,password:string){
@@ -36,9 +41,7 @@ export class AuthService {
 
   login(email:string,password:string){
     return  this.afAuth.signInWithEmailAndPassword(email,password)
-            .then(result =>{
-
-              if(this.verificarUser(result.user?.email)){
+            .then(result =>{            
                 if(result.user?.emailVerified !== true){
                   this.enviarMailVerificacion();
                   alert('Por favor verfique su email');
@@ -46,18 +49,20 @@ export class AuthService {
                 else{
                   this.router.navigate(['/home'])
                 }
-              }
-              else{
-                this.router.navigate(['/home']);
-              }
-
-              
-            })
+              }            
+            )
   }
 
   loginSinVerificacion(email:string,password:string){
     return  this.afAuth.signInWithEmailAndPassword(email,password)
-            .then(result =>{
+            .then( async result =>{
+                  console.log(result.user?.uid)
+                  // this.userService.obtenerUsuario(result.user?.uid).subscribe(doc =>{
+                  //   this.rolUsuario = doc.data()?.rol;
+                  //   // console.log(this.rolUsuario.rol)
+                  // });
+                  this.rolUsuario = await this.userService.obtenerUsuario(result.user?.uid);
+                  console.log(this.rolUsuario)
                   this.router.navigate(['/home'])
             })
               

@@ -23,14 +23,14 @@ mat-card:hover{
     background-size: cover;
 }
 
-.banner-area{
+/* .banner-area{
     min-height: 800px;
     background-image: url(https://preview.colorlib.com/theme/medcare/img/banner/xhome-banner.jpg.pagespeed.ic.hg2GNBINxX.jpg);
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
-    /* position: relative */
-}
+    
+} */
 .titulo{
     font-size: 45px;
     color: #000;
