@@ -13,6 +13,11 @@
             
             <h3 class="text-center">Medico</h3>
         </div>    
+        <div *ngIf="rolLogueado == 'admin'" class="d-flex flex-column align-items-center">
+            <button mat-raised-button color="primary"><img class="img-registro" src="./assets/img/doctor.png" width="300px" data-tipo="admin" (click)="onRolSeleccionado($event)"></button>
+            
+            <h3 class="text-center">Admin</h3>
+        </div>    
     </div>
     <form  *ngIf="!spinner && tipoUsuario" [formGroup]="registroForm">
         

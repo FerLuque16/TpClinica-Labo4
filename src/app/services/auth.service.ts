@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AngularFireAuth } from '@angular/fire/compat/auth';
+import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { UsuarioService } from './usuario.service';
 
@@ -15,7 +16,7 @@ export class AuthService {
 
   
 
-  constructor(private afAuth: AngularFireAuth, private router:Router, private userService:UsuarioService) { }
+  constructor(private afAuth: AngularFireAuth, private router:Router, private userService:UsuarioService, private snackBar: MatSnackBar) { }
 
 
   registrar(email:string,password:string){
@@ -44,7 +45,7 @@ export class AuthService {
             .then(result =>{            
                 if(result.user?.emailVerified !== true){
                   this.enviarMailVerificacion();
-                  alert('Por favor verfique su email');
+                  this.snackBar.open(`Su cuenta no esta verficada. Consulte a su casilla de mensajes en ${result.user?.email}`,'Cerrar');
                 }
                 else{
                   this.router.navigate(['/home'])
@@ -85,5 +86,17 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  ruteoSegunRol(rol:string, email:string){
+    if(rol == 'admin'){
+      this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${email}`,'Cerrar');
+      this.router.navigate(['/usuarios']);
+    }
+    else{
+      this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${email}`,'Cerrar');
+      // this.logout();
+      this.router.navigate(['/bienvenido']);
+    }
   }
 }

@@ -26,7 +26,7 @@ export class UsuarioService {
   // Guarda un usuario en la coleccion usuarios, con el id pasado
   // por parametros
   guardarUsuario(usuario: Usuario | any,id:string){
-    this.firestore.collection('usuarios').doc(id).set(usuario,{merge:true});
+    return this.firestore.collection('usuarios').doc(id).set(usuario,{merge:true});
   }
 
   // Guarda un dato pasado por prametro en el usuario con el id pasado

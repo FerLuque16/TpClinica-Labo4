@@ -16,7 +16,7 @@ export class PacientesComponent implements OnInit {
   ngOnInit(): void {
     this.userService.traerUsuarios().subscribe( users =>{
       this.pacientes = users.filter( pac => pac.rol === 'paciente');
-      console.log(this.pacientes)
+      // console.log(this.pacientes)
     })
   }
 

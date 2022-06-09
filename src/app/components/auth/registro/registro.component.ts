@@ -5,6 +5,8 @@ import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { ImagenService } from 'src/app/services/imagen.service';
 import { UsuarioService } from 'src/app/services/usuario.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -36,13 +38,17 @@ export class RegistroComponent implements OnInit {
 
   tipoUsuario = '';
   registroForm! : FormGroup;
+
+  user:any;
+
+  rolLogueado:string = '';
   constructor(private fb :FormBuilder, private usuarioService: UsuarioService
-              ,private imgService: ImagenService, private auth:AuthService){ 
+              ,private imgService: ImagenService, private auth:AuthService,private router:Router, private snackBar: MatSnackBar){ 
     this.registroForm =  fb.group({
       nombre:['',[Validators.required]],
       apellido:['',[Validators.required]],
       edad:['',[Validators.required]],
-      dni:['',[Validators.required]],
+      dni:['',[Validators.required, Validators.min(11111111),Validators.max(99999999)]],
       rol:[''],
       obraSocial:['',[Validators.required,Validators.minLength(4)]],
       especialidad:[''],
@@ -55,6 +61,11 @@ export class RegistroComponent implements OnInit {
 
   ngOnInit(): void {
     // console.log(this.registroForm.value.tipo);
+    this.auth.getUserLogged().subscribe(async data =>{
+      this.user = await this.usuarioService.obtenerUsuario(data?.uid);
+      this.rolLogueado = this.user?.rol;
+      
+    })
     setTimeout(() => {
       this.spinner = false;
     }, 500);
@@ -134,7 +145,10 @@ export class RegistroComponent implements OnInit {
     if(this.registroForm.value.rol == 'paciente'){
 
       this.usuario = {...this.registroForm.value,imagen1:this.imagenPath1,imagen2:this.imagenPath2};
-      // this.usuario.rol = 'paciente';
+
+      this.usuario.imagen1 = this.usuario.email + this.usuario.imagen1;
+      this.usuario.imagen2 = this.usuario.email + this.usuario.imagen2;
+      this.usuario.rol = 'paciente';
 
       delete this.usuario.especialidad;
       delete this.usuario.habilitado;
@@ -142,14 +156,17 @@ export class RegistroComponent implements OnInit {
       try {
         await this.auth.registrar(this.usuario.email,this.registroForm.value.password);
         
-        this.imgService.subirArchivo(this.selectedFile1,this.imagenPath1,this.selectedFile2,this.imagenPath2);
+        this.imgService.subirArchivo(this.selectedFile1,this.usuario.imagen1,this.selectedFile2,this.usuario.imagen2);
         //Guardo un documento usuario con el id igual al uid registrado
-        this.usuarioService.guardarUsuario(this.usuario, this.auth.usuario.uid);
+        await this.usuarioService.guardarUsuario(this.usuario, this.auth.usuario.uid);
         //Le añado el campo uid al documento del usuario
         this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
+        // this.auth.ruteoSegunRol('paciente',this.usuario.email);
+        this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${this.usuario.email}`,'Cerrar');
+        this.router.navigate(['/bienvenido'])
       } catch (error:any) {
-        console.log('Error en el registro')
-      }
+          console.log('Error en el registro')
+        }
 
 
 
@@ -157,27 +174,59 @@ export class RegistroComponent implements OnInit {
 
       console.log(this.usuario);
     }
-    else{
+    else if (this.registroForm.value.rol == 'especialista'){
 
       this.usuario = {...this.registroForm.value,imagen1:this.imagenPath1};
+      this.usuario.imagen1 = this.usuario.email + this.usuario.imagen1;
       this.usuario.rol = 'especialista';
       this.usuario.habilitado = false;
 
       delete this.usuario.obraSocial;
       delete this.usuario.imagen2;
 
+      console.log(this.usuario);
+
       try {
         await this.auth.registrar(this.usuario.email,this.registroForm.value.password);
-        this.imgService.subirArchivo(this.selectedFile1,this.imagenPath1);
+        this.imgService.subirArchivo(this.selectedFile1,this.usuario.imagen1);
         //Guardo un documento usuario con el id igual al uid registrado
-        this.usuarioService.guardarUsuario(this.usuario,this.auth.usuario.uid);
+        await this.usuarioService.guardarUsuario(this.usuario,this.auth.usuario.uid);
+        console.log(this.auth.usuario.uid)
         //Le añado el campo uid al documento del usuario
-        this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
+        this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);     
+        this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${this.usuario.email}`,'Cerrar');
+        this.router.navigate(['/bienvenido']);
+        this.registroForm.reset();
       } catch (error:any) {
         console.log('Error en el registro')
       }
 
       console.log(this.usuario);
+    }
+    else{
+      this.usuario = {...this.registroForm.value,imagen1:this.imagenPath1};
+      this.usuario.habilitado = false;
+      this.usuario.imagen1 = this.usuario.email + this.usuario.imagen1;
+      this.usuario.rol = 'admin';
+
+      delete this.usuario.obraSocial;
+      delete this.usuario.imagen2;
+      delete this.usuario.habilitado;
+      delete this.usuario.especialidad;
+
+      try {
+        await this.auth.registrar(this.usuario.email,this.registroForm.value.password);
+        this.imgService.subirArchivo(this.selectedFile1,this.usuario.imagen1);
+        //Guardo un documento usuario con el id igual al uid registrado
+        await this.usuarioService.guardarUsuario(this.usuario,this.auth.usuario.uid);
+        //Le añado el campo uid al documento del usuario
+        this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
+        this.registroForm.reset();
+        this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${this.usuario.email}`,'Cerrar');
+        this.router.navigate(['/usarios']);
+      } catch (error:any) {
+        console.log('Error en el registro')
+      }
     }
 
   }
@@ -204,11 +253,9 @@ export class RegistroComponent implements OnInit {
       
       // console.log(this.registroForm.get('obraSocial'))
     }
-    else{
+    else if (event.target.dataset.tipo == 'especialista'){
       this.tipoUsuario = 'especialista';
       this.registroForm.get('rol')?.setValue('especialista');
-
-      
 
       this.registroForm.get('obraSocial')?.clearValidators();
       this.registroForm.get('obraSocial')?.updateValueAndValidity();
@@ -220,6 +267,19 @@ export class RegistroComponent implements OnInit {
       this.registroForm.get('imagen2')?.updateValueAndValidity();    
       
     } 
+    else{
+      this.tipoUsuario = 'admin';
+      this.registroForm.get('rol')?.setValue('admin');
+
+      this.registroForm.get('obraSocial')?.clearValidators();
+      this.registroForm.get('obraSocial')?.updateValueAndValidity();
+
+      this.registroForm.get('especialidad')?.clearValidators();
+      this.registroForm.get('especialidad')?.updateValueAndValidity();
+
+      this.registroForm.get('imagen2')?.clearValidators();
+      this.registroForm.get('imagen2')?.updateValueAndValidity();
+    }
   }
   mostrarAlgo(event:any){
     console.log(event.target.dataset.tipo)

@@ -7,6 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class ImagenService {
 
+  url!:Observable<string | null>
   constructor(private storage: AngularFireStorage) { }
 
   subirArchivo(file: File, filePath:string, file2?:File, filePath2?:string){
@@ -17,5 +18,10 @@ export class ImagenService {
     else{
       let task = this.storage.upload(filePath, file);
     }
+  }
+
+  descargarImagen(urlImg:string){
+    const ref = this.storage.ref(urlImg);
+    return this.url = ref.getDownloadURL();
   }
 }

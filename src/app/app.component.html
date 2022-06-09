@@ -18,19 +18,19 @@
     <mat-sidenav #sidenav mode="over">
         <mat-nav-list>
             <mat-list-item routerLink="/bienvenido" (click)="sidenav.toggle()">
-                <mat-icon mat-list-icon>home</mat-icon>
+                <mat-icon *ngIf="!userLogueado" mat-list-icon>home</mat-icon>
                 <span>Bienvenido</span>
             </mat-list-item>
             <mat-list-item routerLink="/home" (click)="sidenav.toggle()">
                 <mat-icon mat-list-icon>home</mat-icon>
                 <span>Home</span>
             </mat-list-item>
-            <mat-list-item routerLink="/auth/login" (click)="sidenav.toggle()">
-                <mat-icon mat-list-icon>home</mat-icon>
+            <mat-list-item *ngIf="!userLogueado" routerLink="/auth/login" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>login</mat-icon>
                 <span>Login</span>
             </mat-list-item>
-            <mat-list-item routerLink="/auth/registro" (click)="sidenav.toggle()">
-                <mat-icon mat-list-icon>home</mat-icon>
+            <mat-list-item *ngIf="!userLogueado" routerLink="/auth/registro" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>login</mat-icon>
                 <span>Registro</span>
             </mat-list-item>
             <mat-list-item *ngIf="userLogueado" (click)="sidenav.toggle()" (click)="logout()">

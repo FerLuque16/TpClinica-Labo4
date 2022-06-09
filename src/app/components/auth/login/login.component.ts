@@ -1,6 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Usuario } from 'src/app/interfaces/usuario.interface';
 import { AuthService } from 'src/app/services/auth.service';
+import { ImagenService } from 'src/app/services/imagen.service';
+import { UsuarioService } from 'src/app/services/usuario.service';
 
 @Component({
   selector: 'app-login',
@@ -12,15 +15,21 @@ export class LoginComponent implements OnInit {
   spinner = true;
   hide = true;
 
+  usuarioVerificado : boolean = false;
+  esAdmin : boolean = false;
+  listaUsuarios : Usuario[] = [];
+  pacientes : number = 3;
+  medicos : number = 2; 
+
   cuentas: any[] = [
-    {email:'paciente1@gmail.com',password:'paciente1',nombre:'paciente',apellido:'uno'},
-    {email:'paciente2@gmail.com',password:'paciente2',nombre:'paciente',apellido:'dos'},
-    {email:'paciente3@gmail.com',password:'paciente3',nombre:'paciente',apellido:'tres'},
-    {email:'especialista@gmail.com',password:'1234567',nombre:'especialista',apellido:'uno'},
+    {email:'xejkqfmaphvtjuhnsx@nthrw.com',password:'admin123',nombre:'Admin',apellido:'Uno'},
+    // {email:'paciente2@gmail.com',password:'paciente2',nombre:'paciente',apellido:'dos'},
+    // {email:'paciente3@gmail.com',password:'paciente3',nombre:'paciente',apellido:'tres'},
+    // {email:'especialista@gmail.com',password:'1234567',nombre:'especialista',apellido:'uno'},
   ]
 
   loginForm!: FormGroup
-  constructor(private fb :FormBuilder,private auth:AuthService ) {
+  constructor(private fb :FormBuilder,private auth:AuthService,private userService: UsuarioService, private imagenService: ImagenService ) {
 
     this.loginForm = fb.group({
       email:['',[Validators.required, Validators.email]],
@@ -28,74 +37,64 @@ export class LoginComponent implements OnInit {
     })
   }
 
-  /*
-    apellido
-        "luque"
-        (string)
-        contraseña
-        "1234567"
-        dni
-        "2342452"
-        edad
-        "35"
-        email
-        "especialista@gmail.com"
-        especialidad
-        "Pediatria"
-        habilitado
-        true
-        imagen1
-        "clasificacion-saldos.png"
-        nombre
-        "fer"
-        rol
-        "especialista"
-        uid
-        "apellido
-"luque"
-(string)
-contraseña
-"1234567"
-dni
-"2342452"
-edad
-"35"
-email
-"especialista@gmail.com"
-especialidad
-"Pediatria"
-habilitado
-true
-imagen1
-"clasificacion-saldos.png"
-nombre
-"fer"
-rol
-"especialista"
-uid
-"TIwInprF8TTwIH2QQyjtP9xvYNK2"" 
-  */
   ngOnInit(): void {
     setTimeout(() => {
       this.spinner = false;
     }, 500);
+    this.cargarIngresoRapido();
   }
 
 
   async login(){
     try {
-      await this.auth.login(this.loginForm.value.email,this.loginForm.value.password)
+      await this.auth.login(this.loginForm.value.email,this.loginForm.value.password);
+      this.listaUsuarios  = [];
+      this.pacientes  = 3;
+      this.medicos  = 2;  
     } catch (error:any) {
       console.log(error)
     }
   }
 
-  async loginSinVerificacion(email:string, password:string){
+  async loginRapido(email:string, password:string){
     try {
       await this.auth.loginSinVerificacion(email,password)
+      this.listaUsuarios  = [];
+      this.pacientes  = 0;
+      this.medicos  = 0;  
     } catch (error:any) {
       console.log('Error');
     }
+  }
+
+  cargarIngresoRapido(){    
+    this.userService.traerUsuarios().subscribe(
+      usuarios =>{
+        //console.log(usuarios);
+        usuarios.forEach(usuario => {          
+          if(usuario.email == "dxd30566@jiooq.com" && this.listaUsuarios.length < 6){
+            this.listaUsuarios.push(usuario);
+          }
+          //el paciente tiene 2 fotos, asi que tomo la primera
+          if(usuario.rol == 'paciente' && this.pacientes<3){
+            // usuario.fotos = usuario.fotos.split(',')[0];
+            this.listaUsuarios.push(usuario);
+            this.pacientes--;
+          }
+          if(usuario.rol == 'especialista' && this.medicos<2){
+            this.listaUsuarios.push(usuario);
+            this.medicos--;
+          }
+          
+          this.imagenService.descargarImagen(usuario.imagen1).subscribe(
+            url =>{
+              usuario.imagen1 = url;
+            }
+          )
+        });
+        
+      }
+    )
   }
 
   verBoton(email:string,password:string){

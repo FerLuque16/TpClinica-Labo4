@@ -28,7 +28,7 @@
             <input matInput formControlName="obraSocial">
             <mat-error *ngIf="registroForm.controls['obraSocial'].errors?.['required']">La obra social es obligatoria</mat-error>
         </mat-form-field>
-        <mat-form-field *ngIf="tipoUsuario == 'especialista'" appearance="fill" class="ancho">
+        <mat-form-field appearance="fill" class="ancho">
             <mat-label>Especialidad</mat-label>
             <mat-select [(value)]="selected" formControlName="especialidad">
               <mat-option *ngFor="let especialidad of especialidades"  [value]="especialidad.value" >

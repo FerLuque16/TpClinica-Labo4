@@ -24,7 +24,13 @@
     <div class="d-flex flex-column align-items-center mt-5">
         <h2>Usuarios para ingreso rapido</h2>
         <div class="d-flex  gap-4">
-            <button mat-raised-button color="primary" *ngFor="let item of  cuentas" (click)="loginSinVerificacion(item.email,item.password)"><img src="./assets/img/paciente-hardcode.png" width="100px"></button>
+            <div class="d-flex flex-column" *ngFor="let item of  listaUsuarios">
+                <button mat-raised-button color="accent"  (click)="loginRapido(item.email,item.password)"><img *ngIf="item.imagen1.startsWith('https')" [src]="item.imagen1" width="100px">
+                    <mat-spinner *ngIf="!item.imagen1.startsWith('https')"></mat-spinner>
+                </button>
+                <h3 class="text-center">{{item.nombre}} {{item.apellido}}</h3>
+            </div>
+            
             
         </div>
     </div>

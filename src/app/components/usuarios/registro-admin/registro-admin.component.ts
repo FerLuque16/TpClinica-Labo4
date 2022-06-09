@@ -35,7 +35,7 @@ export class RegistroAdminComponent implements OnInit {
         nombre:['',[Validators.required]],
         apellido:['',[Validators.required]],
         edad:['',[Validators.required]],
-        dni:['',[Validators.required]],
+        dni:['',[Validators.required,Validators.min(11111111),Validators.max(99999999)]],
         rol:['admin'],
         imagen1:['',[Validators.required]],
         email:['',[Validators.required,Validators.email]],
@@ -72,6 +72,7 @@ export class RegistroAdminComponent implements OnInit {
         this.usuarioService.guardarUsuario(this.usuario,this.auth.usuario.uid);
         //Le añado el campo uid al documento del usuario
         this.usuarioService.actualizarUsuario({uid: this.auth.usuario.uid},this.auth.usuario.uid);
+        this.registroForm.reset();
         this.snackBar.open(`¡Registro exitoso!. Hemos enviado un mail de verificacion a ${this.usuario.email}`,'Cerrar');
       } catch (error:any) {
         console.log('Error en el registro')

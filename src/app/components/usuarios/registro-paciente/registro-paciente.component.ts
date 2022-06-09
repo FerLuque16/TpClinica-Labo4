@@ -35,7 +35,7 @@ export class RegistroPacienteComponent implements OnInit {
         nombre:['',[Validators.required]],
         apellido:['',[Validators.required]],
         edad:['',[Validators.required]],
-        dni:['',[Validators.required]],
+        dni:['',[Validators.required,Validators.min(11111111),Validators.max(99999999)]],
         rol:['paciente'],
         obraSocial:['',[Validators.required,Validators.minLength(4)]],
         imagen1:['',[Validators.required]],
