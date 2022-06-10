@@ -11,5 +11,6 @@ export interface Usuario{
     password:string,
     habilitado?:boolean,
     rol:string,
-    uid:string
+    uid:string,
+    captcha?:string
 }

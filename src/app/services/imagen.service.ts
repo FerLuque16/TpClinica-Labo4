@@ -20,8 +20,8 @@ export class ImagenService {
     }
   }
 
-  descargarImagen(urlImg:string){
-    const ref = this.storage.ref(urlImg);
-    return this.url = ref.getDownloadURL();
+  descargarImagen(urlImg:any){
+      const ref = this.storage.ref(urlImg);
+      return this.url = ref.getDownloadURL();
   }
 }

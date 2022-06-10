@@ -6,6 +6,9 @@ import { RegistroComponent } from './registro/registro.component';
 import { AuthRoutingModule } from './auth-routing.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
+
+
 
 
 
@@ -13,14 +16,16 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
   declarations: [
     LoginComponent,
     RegistroComponent,
-    VerificarEmailComponent
+    VerificarEmailComponent,
   ],
   imports: [
     CommonModule,
     AuthRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    MaterialModule
+    MaterialModule,
+    RecaptchaModule,
+    RecaptchaFormsModule
   ]
 })
 export class AuthModule { }

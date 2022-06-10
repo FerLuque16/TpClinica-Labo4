@@ -8,6 +8,9 @@ import { AuthService } from 'src/app/services/auth.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 
+import { ReCaptchaV3Service } from 'ng-recaptcha';
+
+
 
 @Component({
   selector: 'app-registro',
@@ -55,7 +58,8 @@ export class RegistroComponent implements OnInit {
       imagen1:['',[Validators.required]],
       imagen2:['',[Validators.required]],
       email:['',[Validators.required,Validators.email]],
-      password:['',[Validators.required,Validators.minLength(6)]]
+      password:['',[Validators.required,Validators.minLength(6)]],
+      captcha:[null,Validators.required]
     })
   }
 
@@ -64,6 +68,7 @@ export class RegistroComponent implements OnInit {
     this.auth.getUserLogged().subscribe(async data =>{
       this.user = await this.usuarioService.obtenerUsuario(data?.uid);
       this.rolLogueado = this.user?.rol;
+      console.log(this.rolLogueado)
       
     })
     setTimeout(() => {
@@ -150,8 +155,10 @@ export class RegistroComponent implements OnInit {
       this.usuario.imagen2 = this.usuario.email + this.usuario.imagen2;
       this.usuario.rol = 'paciente';
 
+
       delete this.usuario.especialidad;
       delete this.usuario.habilitado;
+      delete this.usuario.captcha;
 
       try {
         await this.auth.registrar(this.usuario.email,this.registroForm.value.password);
@@ -183,6 +190,7 @@ export class RegistroComponent implements OnInit {
 
       delete this.usuario.obraSocial;
       delete this.usuario.imagen2;
+      delete this.usuario.captcha;
 
       console.log(this.usuario);
 
@@ -213,6 +221,7 @@ export class RegistroComponent implements OnInit {
       delete this.usuario.imagen2;
       delete this.usuario.habilitado;
       delete this.usuario.especialidad;
+      delete this.usuario.captcha;
 
       try {
         await this.auth.registrar(this.usuario.email,this.registroForm.value.password);

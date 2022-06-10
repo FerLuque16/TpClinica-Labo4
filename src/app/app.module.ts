@@ -19,6 +19,15 @@ import { NavbarComponent } from './components/shared/navbar/navbar.component';
 import { SidebarComponent } from './components/shared/sidebar/sidebar.component';
 import { BienvenidoComponent } from './components/bienvenido/bienvenido.component';
 import { HomeComponent } from './components/home/home.component';
+import { DialogCaptchaComponent } from './components/shared/dialog-captcha/dialog-captcha.component';
+
+import { RECAPTCHA_SETTINGS, RecaptchaFormsModule, RecaptchaModule, RecaptchaSettings } from 'ng-recaptcha';
+import { PerfilComponent } from './components/perfil/perfil.component';
+
+
+
+// import { RECAPTCHA_SETTINGS, RecaptchaSettings, RecaptchaV3Module } from "ng-recaptcha";
+
 
 
 
@@ -28,7 +37,9 @@ import { HomeComponent } from './components/home/home.component';
     NavbarComponent,
     SidebarComponent,
     BienvenidoComponent,
-    HomeComponent
+    HomeComponent,
+    DialogCaptchaComponent,
+    PerfilComponent
   ],
   imports: [
     BrowserModule,
@@ -37,9 +48,18 @@ import { HomeComponent } from './components/home/home.component';
     MaterialModule,
     ReactiveFormsModule,
     AngularFireModule.initializeApp(environment.firebase),
-    AngularFireStorageModule
+    AngularFireStorageModule,
+    RecaptchaModule,
+    RecaptchaFormsModule
   ],
-  providers: [],
+  providers: [
+    {
+      provide: RECAPTCHA_SETTINGS,
+      useValue: {
+        siteKey: environment.recaptcha.siteKey,
+      } as RecaptchaSettings,
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from './services/auth.service';
+import { UsuarioService } from './services/usuario.service';
 
 @Component({
   selector: 'app-root',
@@ -13,10 +14,11 @@ export class AppComponent{
 
   userLogueado:any;
 
-  constructor(private auth: AuthService, private router: Router){}
+  constructor(private auth: AuthService, private router: Router, private userService: UsuarioService){}
   ngOnInit():void{
-    this.auth.getUserLogged().subscribe(user =>{
-      this.userLogueado = user;
+    this.auth.getUserLogged().subscribe(async user =>{
+      this.userLogueado = await this.userService.obtenerUsuario(user?.uid);
+      console.log(this.userLogueado)
     })
   }
 

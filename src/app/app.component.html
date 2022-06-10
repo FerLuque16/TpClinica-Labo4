@@ -7,6 +7,8 @@
     </button>
     <span>Clinica Fernando Luque</span>
     <span class="example-spacer"></span>
+    <div *ngIf="userLogueado" class="mr-2">User: {{userLogueado.email}}</div>
+
     <!-- <button mat-icon-button class="example-icon favorite-icon" aria-label="Example icon-button with heart icon">
       <mat-icon>favorite</mat-icon>
     </button>
@@ -17,11 +19,11 @@
 <mat-sidenav-container>
     <mat-sidenav #sidenav mode="over">
         <mat-nav-list>
-            <mat-list-item routerLink="/bienvenido" (click)="sidenav.toggle()">
+            <!-- <mat-list-item routerLink="/bienvenido" (click)="sidenav.toggle()">
                 <mat-icon *ngIf="!userLogueado" mat-list-icon>home</mat-icon>
                 <span>Bienvenido</span>
-            </mat-list-item>
-            <mat-list-item routerLink="/home" (click)="sidenav.toggle()">
+            </mat-list-item> -->
+            <mat-list-item *ngIf="userLogueado" routerLink="/home" (click)="sidenav.toggle()">
                 <mat-icon mat-list-icon>home</mat-icon>
                 <span>Home</span>
             </mat-list-item>
@@ -33,12 +35,21 @@
                 <mat-icon mat-list-icon>login</mat-icon>
                 <span>Registro</span>
             </mat-list-item>
+            <mat-list-item  *ngIf="userLogueado" routerLink="/perfil" (click)="sidenav.toggle()">
+                <mat-icon mat-list-icon>account_box</mat-icon>
+                <span>Mi Perfil</span>
+            </mat-list-item>
             <mat-list-item *ngIf="userLogueado" (click)="sidenav.toggle()" (click)="logout()">
                 <mat-icon mat-list-icon>logout</mat-icon>
                 <span>Cerrar sesion</span>
             </mat-list-item>
         </mat-nav-list>
     </mat-sidenav>
+    
+    
+
+        
+    
 
     <div>
 

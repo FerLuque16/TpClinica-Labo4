@@ -11,7 +11,10 @@ export const environment = {
     authDomain: 'fernandoluque-tpclinica.firebaseapp.com',
     messagingSenderId: '954698860814',
   },
-  production: false
+  production: false,
+  recaptcha:{
+    siteKey: '6LdU41ogAAAAAEXYf-EqwtQTgtQdd2IGWPu9qp2B'
+  }
 };
 
 /*

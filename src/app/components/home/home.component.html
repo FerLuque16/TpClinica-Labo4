@@ -3,7 +3,7 @@
 <div class="body">
 
     <div class="d-flex justify-content-center align-items-center gap-5">
-        <mat-card class="example-card" routerLink="/usuarios">
+        <mat-card *ngIf="userRol == 'admin'" class="example-card" routerLink="/usuarios">
             <mat-card-header class="justify-content-center">
               <mat-card-title>Ver usuarios</mat-card-title>
             </mat-card-header>

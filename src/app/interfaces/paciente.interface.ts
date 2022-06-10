@@ -7,5 +7,6 @@ export interface Paciente{
     imagen1:string,
     imagen2:string,
     email:string,
-    habilitado:boolean
+    habilitado:boolean,
+    captcha:string
 }

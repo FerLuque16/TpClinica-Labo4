@@ -42,6 +42,7 @@ export class LoginComponent implements OnInit {
       this.spinner = false;
     }, 500);
     this.cargarIngresoRapido();
+    console.log(this.listaUsuarios)
   }
 
 
@@ -60,8 +61,8 @@ export class LoginComponent implements OnInit {
     try {
       await this.auth.loginSinVerificacion(email,password)
       this.listaUsuarios  = [];
-      this.pacientes  = 0;
-      this.medicos  = 0;  
+      this.pacientes  = 3;
+      this.medicos  = 2;  
     } catch (error:any) {
       console.log('Error');
     }
@@ -70,20 +71,23 @@ export class LoginComponent implements OnInit {
   cargarIngresoRapido(){    
     this.userService.traerUsuarios().subscribe(
       usuarios =>{
-        //console.log(usuarios);
+        console.log(usuarios);
         usuarios.forEach(usuario => {          
           if(usuario.email == "dxd30566@jiooq.com" && this.listaUsuarios.length < 6){
             this.listaUsuarios.push(usuario);
+            console.log(this.listaUsuarios)
           }
           //el paciente tiene 2 fotos, asi que tomo la primera
-          if(usuario.rol == 'paciente' && this.pacientes<3){
+          if(usuario.rol == 'paciente' && this.pacientes>0){
             // usuario.fotos = usuario.fotos.split(',')[0];
             this.listaUsuarios.push(usuario);
             this.pacientes--;
+            console.log(this.listaUsuarios)
           }
-          if(usuario.rol == 'especialista' && this.medicos<2){
+          if(usuario.rol == 'especialista' && this.medicos>0){
             this.listaUsuarios.push(usuario);
             this.medicos--;
+            console.log(this.listaUsuarios)
           }
           
           this.imagenService.descargarImagen(usuario.imagen1).subscribe(
